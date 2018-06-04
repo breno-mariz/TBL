@@ -39,9 +39,26 @@ jobs:
       - store_artifacts:
           path: test-reports
           destination: test-reports
+          
+  deploy:
+    machine:
+    working_directory: ~/circleci-demo-workflows
+        enabled: true
+    steps:
+      - checkout
+      - run:
+          name: Deploy Dev to Heroku
+          command: |
+            git push https://heroku:2b2b0ebd-2523-451f-bac7-2d53f34e0a50@git.heroku.com/tbl-circle.git master
 
-      - deployment:
-          staging:
-            branch: dev
-            heroku:
-              appname: tbl-circle 
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: dev
