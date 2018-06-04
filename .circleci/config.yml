@@ -22,6 +22,8 @@ jobs:
             . venv/bin/activate
             pip install --upgrade pip
             pip install -r requirements.txt
+            python3 manage.py makemigrations
+            python3 manage.py migrate
 
       - save_cache:
           paths:
